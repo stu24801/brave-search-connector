@@ -1,0 +1,287 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "GitHub Repo Reader API,
+    "description": "Custom Connector to read GitHub Repository contents and metadata.",
+    "version": "1.0.0"
+  },
+  "host": "api.github.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/repos/{owner}/{repo}/contents/{path}": {
+      "get": {
+        "summary": "Get Repository Content",
+        "description": "Gets the contents of a file or directory in a repository.",
+        "operationId": "GetRepoContent",
+        "parameters": [
+          {
+            "name": "owner",
+            "in": "path",
+            "description": "The account owner of the repository (e.g. from https://github.com/OWNER/repo)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo",
+            "in": "path",
+            "description": "The name of the repository (e.g. from https://github.com/owner/REPO)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "path",
+            "in": "path",
+            "description": "The content path (e.g. README.md or src/index.ts)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "ref",
+            "in": "query",
+            "description": "The name of the commit/branch/tag. Default is the default branch.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "encoding": {
+                  "type": "string"
+                },
+                "size": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string",
+                  "description": "Base64 encoded content"
+                },
+                "sha": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "git_url": {
+                  "type": "string"
+                },
+                "html_url": {
+                  "type": "string"
+                },
+                "download_url": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/repos/{owner}/{repo}/branches": {
+      "get": {
+        "summary": "List Branches",
+        "description": "Lists branches in a repository.",
+        "operationId": "ListBranches",
+        "parameters": [
+          {
+            "name": "owner",
+            "in": "path",
+            "description": "The account owner of the repository.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo",
+            "in": "path",
+            "description": "The name of the repository.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "protected",
+            "in": "query",
+            "description": "Setting to true returns only protected branches.",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Results per page (max 100).",
+            "required": false,
+            "type": "integer",
+            "default": 30
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number of the results to fetch.",
+            "required": false,
+            "type": "integer",
+            "default": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "commit": {
+                    "type": "object",
+                    "properties": {
+                      "sha": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "protected": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/repos/{owner}/{repo}/commits": {
+      "get": {
+        "summary": "List Commits",
+        "description": "Lists commits on a repository.",
+        "operationId": "ListCommits",
+        "parameters": [
+          {
+            "name": "owner",
+            "in": "path",
+            "description": "The account owner of the repository.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "repo",
+            "in": "path",
+            "description": "The name of the repository.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "sha",
+            "in": "query",
+            "description": "SHA or branch to start listing commits from.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "path",
+            "in": "query",
+            "description": "Only commits containing this file path will be returned.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Results per page (max 100).",
+            "required": false,
+            "type": "integer",
+            "default": 30
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number of the results to fetch.",
+            "required": false,
+            "type": "integer",
+            "default": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "sha": {
+                    "type": "string"
+                  },
+                  "commit": {
+                    "type": "object",
+                    "properties": {
+                      "author": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "date": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "html_url": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "BearerAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ]
+}
