@@ -23,37 +23,31 @@ paths:
           description: The account owner of the repository (e.g. from https://github.com/OWNER/repo)
           required: true
           type: string
-          x-ms-summary: Repository Owner (e.g. microsoft)
         - name: repo
           in: path
           description: The name of the repository (e.g. from https://github.com/owner/REPO)
           required: true
           type: string
-          x-ms-summary: Repository Name (e.g. typescript)
         - name: path
           in: path
           description: The content path (e.g. README.md or src/index.ts)
           required: true
           type: string
-          x-ms-summary: File Path
         - name: ref
           in: query
           description: The name of the commit/branch/tag. Default is the default branch.
           required: false
           type: string
-          x-ms-summary: Branch or Tag (Optional)
       responses:
-        '200':
+        200:
           description: Successful response
           schema:
             type: object
             properties:
               type:
                 type: string
-                description: file or dir
               encoding:
                 type: string
-                description: base64
               size:
                 type: integer
               name:
@@ -81,16 +75,14 @@ paths:
       parameters:
         - name: owner
           in: path
-         description: The account owner of the repository.
+          description: The account owner of the repository.
           required: true
           type: string
-          x-ms-summary: Repository Owner
         - name: repo
           in: path
           description: The name of the repository.
           required: true
           type: string
-          x-ms-summary: Repository Name
         - name: protected
           in: query
           description: Setting to true returns only protected branches.
@@ -109,7 +101,7 @@ paths:
           type: integer
           default: 1
       responses:
-        '200':
+        200:
           description: Successful response
           schema:
             type: array
@@ -138,25 +130,21 @@ paths:
           description: The account owner of the repository.
           required: true
           type: string
-          x-ms-summary: Repository Owner
         - name: repo
           in: path
           description: The name of the repository.
           required: true
           type: string
-          x-ms-summary: Repository Name
         - name: sha
           in: query
           description: SHA or branch to start listing commits from.
           required: false
           type: string
-          x-ms-summary: Branch or SHA (Optional)
         - name: path
           in: query
           description: Only commits containing this file path will be returned.
           required: false
           type: string
-          x-ms-summary: File Path Filter (Optional)
         - name: per_page
           in: query
           description: Results per page (max 100).
@@ -170,7 +158,7 @@ paths:
           type: integer
           default: 1
       responses:
-        '200':
+        200:
           description: Successful response
           schema:
             type: array
