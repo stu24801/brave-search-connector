@@ -1,0 +1,89 @@
+swagger: '2.0'
+info:
+  title: Brave Search API
+  description: Brave Search API for Power Apps Custom Connector
+  version: 1.0.0
+host: api.search.brave.com
+basePath: /res/v1
+schemes:
+  - https
+consumes: []
+produces:
+  - application/json
+paths:
+  /web/search:
+    get:
+      summary: Search the Web
+      description: Get web search results from Brave Search API.
+      operationId: SearchWeb
+      parameters:
+        - name: q
+          in: query
+          description: The search query string.
+          required: true
+          type: string
+        - name: count
+          in: query
+          description: The number of search results to return (1-20).
+          required: false
+          type: integer
+          default: 20
+        - name: offset
+          in: query
+          description: The zero-based offset for pagination.
+          required: false
+          type: integer
+          default: 0
+        - name: country
+          in: query
+          description: The country code for localized results (e.g., US, GB, DE).
+          required: false
+          type: string
+        - name: search_lang
+          in: query
+          description: The language code for search results (e.g., en, de, fr).
+          required: false
+          type: string
+        - name: ui_lang
+          in: query
+          description: The language code for the user interface.
+          required: false
+          type: string
+        - name: X-Subscription-Token
+          in: header
+          description: Brave Search API Subscription Token
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            type: object
+            properties:
+              web:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                        url:
+                          type: string
+                        description:
+                          type: string
+                        age:
+                          type: string
+        '401':
+          description: Unauthorized - Check your API key.
+        '429':
+          description: Too Many Requests - Rate limit exceeded.
+securityDefinitions:
+  ApiKey:
+    type: apiKey
+    in: header
+    name: X-Subscription-Token
+security:
+  - ApiKey: []
