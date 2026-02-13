@@ -1,8 +1,8 @@
 swagger: '2.0'
 info:
   title: GitHub Repo Reader
-  description: Read content from GitHub repositories.
-  version: 1.0.0
+  description: Read content and list files from GitHub repositories.
+  version: 1.0.1
 host: api.github.com
 basePath: /
 schemes:
@@ -61,6 +61,64 @@ paths:
                 type: string
               download_url:
                 type: string
+  /repos/{owner}/{repo}/git/trees/{tree_sha}:
+    get:
+      summary: Get Repository File List (Recursive)
+      description: Lists all files and directories in the repository (using Git Trees API). To list from the root, use the branch name (e.g., 'main') as the tree_sha.
+      operationId: GetRepoTree
+      parameters:
+        - name: owner
+          in: path
+          description: Repository Owner (e.g. microsoft)
+          required: true
+          type: string
+        - name: repo
+          in: path
+          description: Repository Name (e.g. vscode)
+          required: true
+          type: string
+        - name: tree_sha
+          in: path
+          description: The branch name (e.g. main) or commit SHA.
+          required: true
+          type: string
+        - name: recursive
+          in: query
+          description: Set to 1 to list all files recursively.
+          required: false
+          type: string
+          default: '1'
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            type: object
+            properties:
+              sha:
+                type: string
+              url:
+                type: string
+              tree:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    path:
+                      type: string
+                      description: The full path of the file.
+                    mode:
+                      type: string
+                    type:
+                      type: string
+                      description: 'blob' for file, 'tree' for directory.
+                    sha:
+                      type: string
+                    size:
+                      type: integer
+                    url:
+                      type: string
+              truncated:
+                type: boolean
 securityDefinitions:
   BearerAuth:
     type: apiKey
